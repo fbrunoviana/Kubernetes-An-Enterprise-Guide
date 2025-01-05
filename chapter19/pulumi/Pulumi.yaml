@@ -2,7 +2,7 @@ name: kube-enterprise-3-idp
 runtime:
   name: python
   options:
-    virtualenv: /Users/marcboorshtein/Documents/bookv3/venv
+    virtualenv: /home/fbrunoviana/venv
 description: A minimal Python Pulumi program
 config:
   pulumi:tags:
