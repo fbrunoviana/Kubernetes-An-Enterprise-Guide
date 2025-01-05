@@ -81,9 +81,15 @@ spec:
                 # Scale up k3s replicas
                 replicas: 1
 
+                controlPlane:
+                  distro: k3s
+
                 sync:
                   ingresses:
                     enabled: true
+                  coredns:
+                    enabled: true
+                    replicas: 1
 
                 syncer:
                   extraArgs:
@@ -103,21 +109,15 @@ spec:
                   volumeMounts:
                   - mountPath: /etc/mysql-tls
                     name: mysql-tls
-                  # - mountPath: /data
-                  #   name: data
+
                 volumes:
                 - name: mysql-tls
                   secret:
                     secretName: vcluster-client-tls
 
                 # Disable persistent storage as all data (including bootstrap data) is stored in external datastore
-                storage:
+                storage:                
                   persistence: false
-
-                # Scale up CoreDNS replicas
-                coredns:
-                  replicas: 1
-
         srcType: yaml
         writeToRequest: "true"
         requestAttribute: git-$remote-target$-$nameSpace$-vcluster-config

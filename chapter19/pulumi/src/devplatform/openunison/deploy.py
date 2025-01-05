@@ -441,12 +441,11 @@ def deploy_openunison_charts(ca_cert,k8s_provider: Provider, kubernetes_distribu
 
     orchestra_chart_name = 'orchestra'
     orchestra_chart_version = get_latest_helm_chart_version(index_url,orchestra_chart_name)
-    localpath = '/Users/marcboorshtein/git-local/helm-charts';
+
     openunison_orchestra_release = k8s.helm.v3.Release(
         resource_name='orchestra',
         args=k8s.helm.v3.ReleaseArgs(
             chart=orchestra_chart_name,
-            #chart=localpath + '/' + orchestra_chart_name,
             version=orchestra_chart_version,
             values=openunison_helm_values,
             namespace='openunison',
@@ -455,7 +454,6 @@ def deploy_openunison_charts(ca_cert,k8s_provider: Provider, kubernetes_distribu
             wait_for_jobs=True,
             repository_opts= k8s.helm.v3.RepositoryOptsArgs(
                 repo=chart_url
-                #path=localpath
             ),
 
         ),
@@ -541,7 +539,6 @@ def deploy_openunison_charts(ca_cert,k8s_provider: Provider, kubernetes_distribu
         'orchestra-cluster-management',
         k8s.helm.v3.ReleaseArgs(
             chart=orchestra_cluster_management_chart_name,
-            #chart=localpath + '/' + orchestra_cluster_management_chart_name,
             version=orchestra_cluster_management_chart_version,
             values=orchestra_cm_helm_values,
             namespace='openunison',

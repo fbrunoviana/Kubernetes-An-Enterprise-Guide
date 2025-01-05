@@ -148,20 +148,19 @@ def deploy_cp_integration(k8s_provider: Provider,cp_domain_suffix:str,domain_suf
     chart_index_path = "index.yaml"
     chart_url = "https://nexus.tremolo.io/repository/helm"
     index_url = f"{chart_url}/{chart_index_path}"
-    #chart_version = get_latest_helm_chart_version(index_url,chart_name)
-    localpath = '/Users/marcboorshtein/git-local/helm-charts';
+    chart_version = get_latest_helm_chart_version(index_url,chart_name)
+
     openunison_k8s_add_client_release = k8s.helm.v3.Release(
         'openunison-cluster-' + env,
         k8s.helm.v3.ReleaseArgs(
-            #chart=chart_name,
-            chart=localpath + '/' + chart_name,
-            #version=chart_version,
+            chart=chart_name,
+            version=chart_version,
             values=helm_values,
             namespace='openunison',
             skip_await=False,
-            # repository_opts= k8s.helm.v3.RepositoryOptsArgs(
-            #     repo=chart_url
-            # ),
+            repository_opts= k8s.helm.v3.RepositoryOptsArgs(
+                repo=chart_url
+            ),
         ),
         opts=pulumi.ResourceOptions(
             provider = k8s_provider,
@@ -485,21 +484,19 @@ def deploy_openunison_charts(ca_cert,k8s_provider: Provider, kubernetes_distribu
 
     orchestra_chart_name = 'orchestra'
     orchestra_chart_version = get_latest_helm_chart_version(index_url,orchestra_chart_name)
-    localpath = '/Users/marcboorshtein/git-local/helm-charts';
     openunison_orchestra_release = k8s.helm.v3.Release(
         resource_name='orch-'+env,
         args=k8s.helm.v3.ReleaseArgs(
-            chart=localpath + '/' + orchestra_chart_name,
+            chart=orchestra_chart_name,
             version=orchestra_chart_version,
             values=openunison_helm_values,
             namespace='openunison',
             #name='orchestra',
             skip_await=False,
             wait_for_jobs=True,
-            # repository_opts= k8s.helm.v3.RepositoryOptsArgs(
-            #     #repo=chart_url
-            #     path=localpath
-            # ),
+            repository_opts= k8s.helm.v3.RepositoryOptsArgs(
+                repo=chart_url
+            ),
 
         ),
 
